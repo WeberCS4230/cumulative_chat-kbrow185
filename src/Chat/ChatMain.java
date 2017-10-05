@@ -8,7 +8,14 @@ public class ChatMain {
 
 	public static void main(String[] args) 
 	{
-		// TODO Auto-generated method stub
+		// Creates hashset of student objects and initializes the set.
+		
+		GuiSection theGui = new GuiSection("You Say:");
+		
+		
+		
+		
+		
 		HashSet<Student> studentList = new HashSet<Student>();
 		studentList.add(new Student("Josh","Burnham",(float) 15.2));
 		studentList.add(new Student("Mr.","Miyagi",(float) 12.9));
@@ -19,6 +26,7 @@ public class ChatMain {
 		studentList.add(new Student("Ima","Trouble",(float) 3.3));
 		studentList.add(new Student("WiiShii","Nintendo",(float) 3.3));
 		
+		//Creates an array list of treesets so there can be groups of 2 students.
 		ArrayList<TreeSet<Student>> groups = new ArrayList<TreeSet<Student>>();
 		
 		//Convert student hashset to array.
@@ -35,22 +43,24 @@ public class ChatMain {
 		//For each assigned group, have each student say 5 responses.
 		for(TreeSet<Student> g : groups)
 		{
-			System.out.println("-----------New Convo----------");
+			//System.out.println("-----------New Convo----------");
+			theGui.addToChat("-----------New Convo----------");
 			for(int i =0; i <5; i++)
 			{
 				for(Student s: g)
 				{
-					System.out.println(s.firstName + " " +s.lastName + ":  " +s.getResponse()+ "\n");
+					theGui.addToChat(s.firstName + " " +s.lastName + ":  " +s.getResponse()+ "\n");
+					//System.out.println(s.firstName + " " +s.lastName + ":  " +s.getResponse()+ "\n");
 				}
 			}
 			
 		}
-		
-		/*for(Student i : studentList)
-		{
-			System.out.println(i.firstName);
+		//Creates 5 lines of blank space after generated conversation.
+		for(int i =0; i <5; i ++) {
+			theGui.addToChat("   \n");
 		}
-		*/
+		theGui.addToChat("CUSTOM IMPUT FROM USER.");
+		
 	}
 
 }

@@ -16,6 +16,7 @@ public class Student implements Comparable<Student>
 	
 	public Student(String fName, String lName, float studentScore)
 	{
+		
 		score = studentScore;
 		firstName =fName;
 		lastName = lName;
