@@ -32,28 +32,13 @@ public class Student implements Comparable<Student>
 	//return 0 if equal, return 1 if this class is further than s, -1 if this is behind s
 	public int compareTo(Student s)
 	{
-		int alpha = this.firstName.compareTo(s.firstName);
-		
-		if(alpha == 0)
-		{
-			alpha = this.lastName.compareTo(s.lastName);
+		if (firstName.compareTo(s.firstName) == 0) {
+			return lastName.compareTo(s.lastName);
 		}
-		if(alpha > 0)
-		{
-			//This student's name is after S student.
-			return 1;
+		else {
+			return firstName.compareTo(s.lastName);
 		}
-		else if(alpha < 0)
-		{
-			//This student is before S student
-			return -1;
-		}
-		else
-		{
-			//this student is the same name wise.
-			return 0;
-		}
-
+		// You may want to pull your return statement out, or use one less comparison on compareTo, but this does the same thing AND doesn't require you to redefine the actual return of compareTo from the String.
 	}
 	public String getResponse()
 	{
