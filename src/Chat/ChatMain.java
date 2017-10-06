@@ -8,7 +8,6 @@ public class ChatMain {
 
 	public static void main(String[] args) 
 	{
-		// TODO Auto-generated method stub
 		HashSet<Student> studentList = new HashSet<Student>();
 		studentList.add(new Student("Josh","Burnham",(float) 15.2));
 		studentList.add(new Student("Mr.","Miyagi",(float) 12.9));
@@ -45,12 +44,6 @@ public class ChatMain {
 			}
 			
 		}
-		
-		/*for(Student i : studentList)
-		{
-			System.out.println(i.firstName);
-		}
-		*/
 	}
 
 }
