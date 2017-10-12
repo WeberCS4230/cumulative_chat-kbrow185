@@ -1,38 +1,57 @@
 package Chat;
 
-import java.io.DataInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
 
-import javax.swing.JTextArea;
+
 
 public class ChatServer extends Thread
 {
 	private ServerSocket theServer;
-	JTextArea theChat;
+	ArrayList<String> users;
 	
-	public ChatServer(int portID,JTextArea chatWindow) throws IOException {
+	public ChatServer(int portID) throws IOException {
 		
 	theServer = new ServerSocket(portID);
-	theServer.setSoTimeout(10000);
-	theChat = chatWindow;
+	//theServer.setSoTimeout(20000);
+	users = new ArrayList<String>();
+
 	}
 	
 	
 	public void run(){
 	
-		boolean noConnection = true;
-		theChat.append("Waiting for client connection. Port: " + theServer.getLocalPort());
+		System.out.println("Waiting for client connection. Port: " + theServer.getLocalPort());
 		while(true){
 		try {
-			Socket server = theServer.accept();
-			if(noConnection) {
-				noConnection = false;
-				theChat.append("Just connected to " + server.getRemoteSocketAddress());
-			}
-			DataInputStream infoIn = new DataInputStream(server.getInputStream());
-			theChat.append((String)infoIn.readUTF());
+			Socket theSocket = theServer.accept();
+
+			PrintWriter dataOut =  new PrintWriter(theSocket.getOutputStream(), true);
+			BufferedReader dataIn = new BufferedReader( new InputStreamReader(theSocket.getInputStream()));
+			System.out.println("Client connection successful, Port: " + theServer.getLocalPort());
 			
+			while(theSocket.isConnected()) 
+			{
+				String input = dataIn.readLine();
+				if(input.contains("<('.')> Name"))
+				{
+					String tempUser = input.replace("<('.')> Name", "");
+					if(users.contains(tempUser)){
+						dataOut.println("USER NAME HAS BEEN TAKEN. Renaming!");
+						System.out.println("Username taken");
+					}
+					else {
+						users.add(tempUser);
+						dataOut.println("Welcome "+tempUser);
+						System.out.println(tempUser +" Connected");
+					}
+				}
+				else {
+				dataOut.println(input);
+				}
+			}
+			//theSocket.close();
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

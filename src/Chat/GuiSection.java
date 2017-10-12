@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.net.Socket;
 
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
@@ -20,16 +21,20 @@ public class GuiSection extends JFrame
 	JButton addChatButton;
 	JTextArea chatWindow;
 	JTextArea userInputTextBox;
-	String userName;
 	JScrollPane theScroller;
 	DefaultCaret caret;
 	Box theBox;
 	ChatClient theClient;
 	ChatServer theServer;
+	boolean nameAdd;
+	String userName;
+	String response;
 	
-	public GuiSection(String username)
+	public GuiSection()
 	{
-		userName = username;
+		nameAdd = false;
+		userName = "No Name";
+		response = "";
 		
         Box theBox = Box.createVerticalBox();
 		chatWindow= new JTextArea(40,10);
@@ -50,13 +55,8 @@ public class GuiSection extends JFrame
 		addChatButton.setMnemonic(KeyEvent.VK_ENTER);
 		addChatButton.addActionListener(new ActionListener() {@Override
 				public void actionPerformed(ActionEvent e) {
-			try {
-				theClient.sendNewLine(userName + ": " + userInputTextBox.getText());
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-					userInputTextBox.setText("");
+				connectAddToChat(userInputTextBox.getText());
+				userInputTextBox.setText("");
 			}});
 		
 		
@@ -75,14 +75,59 @@ public class GuiSection extends JFrame
 
 
 	}
-	public void serverStart() throws IOException{
-		theClient = new ChatClient("Chat Server", 8090, chatWindow);
-		theServer = new ChatServer(8090, chatWindow);
+	public void startConnection() throws IOException{
+		chatWindow.append("Please enter the requested IP address");
+		
+		
+		
+		if(!hostAvailable()) {
+		theServer = new ChatServer(8090);
 		new Thread(theServer).start();
+		}
+		theClient = new ChatClient("localhost", 8090, chatWindow);
+		new Thread(theClient).start();
 	}
 	
-	public void defaultAddToChat(String sentence){
-		chatWindow.append(sentence + "\n");
+	
+	public boolean hostAvailable() {
+		try{
+			Socket s = new Socket("127.0.0.1",8090);
+			s.close();
+			return true;
+		} catch(IOException e){
+			
+		}
+		return false;
+	}
+	
+	
+	public void defaultAddToChat(String username, String sentence){
+		chatWindow.append(username +":   " +sentence + "\n");
+	}
+	
+	
+	public void connectAddToChat(String sentence) {
+		
+		try
+		{
+		if(!nameAdd) {
+			userName = sentence;
+			theClient.sendNewLine(sentence);
+			
+		}
+		else
+		{
+			
+		}
+		}catch(IOException e){
+			
+		}
+		
+	}
+	
+	public void closeServers()
+	{
+		
 	}
 	
 

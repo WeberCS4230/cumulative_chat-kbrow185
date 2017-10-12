@@ -5,37 +5,42 @@ import java.net.*;
 
 import javax.swing.JTextArea;
 
-public class ChatClient extends Thread 
+public class ChatClient extends Thread
 {
 	Socket clientSocket;
-	String theServerName;
+	String serverLocation;
 	int thePort;
 	String newLine;
 	Boolean serverStart;
-	DataOutputStream dataOut;
-	DataInputStream dataIn;
+	PrintWriter dataOut;
+	BufferedReader dataIn;
 	JTextArea theChatWindow;
 	
 	public ChatClient(String serverName,int port,JTextArea chatWindow ){
 		thePort=port;
-		theServerName=serverName;
+		serverLocation=serverName;
 		newLine="";
-		serverStart=false;
 		theChatWindow = chatWindow;
-		
+		serverStart=false;
+	}
+	
+	public void run() {
 		try {
-			clientSocket = new Socket(theServerName, thePort);
-			dataIn = new DataInputStream(clientSocket.getInputStream());
-			dataOut = new DataOutputStream(clientSocket.getOutputStream());
-			BufferedReader buff = new BufferedReader(new InputStreamReader(dataIn));
-			serverStart=true;
+			clientSocket = new Socket(serverLocation, thePort);
 			
+			
+			 dataIn = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+			 dataOut =  new PrintWriter(clientSocket.getOutputStream(), true);
+
+			theChatWindow.append("Just connected to " + clientSocket.getRemoteSocketAddress());
+			serverStart = true;
 			while(true)
 			{
+
 				
 				
 				
-				newLine = buff.readLine();
+				theChatWindow.append( dataIn.readLine());
 				//dataOut = writeUTF()
 			}
 			
@@ -48,17 +53,15 @@ public class ChatClient extends Thread
 		}
 		
 	}
-	
-
-	public void run(){
+	public void checkForName()
+	{
 		
 	}
 	
 	public void sendNewLine(String theResponse) throws IOException
 	{
 		if(serverStart){
-		newLine = theResponse;
-		dataOut.writeUTF(newLine);
+		dataOut.println(theResponse);
 		}
 		
 	}
