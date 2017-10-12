@@ -5,8 +5,7 @@ import java.net.*;
 
 import javax.swing.JTextArea;
 
-public class ChatClient extends Thread
-{
+public class ChatClient extends Thread {
 	Socket clientSocket;
 	String serverLocation;
 	int thePort;
@@ -15,35 +14,30 @@ public class ChatClient extends Thread
 	PrintWriter dataOut;
 	BufferedReader dataIn;
 	JTextArea theChatWindow;
-	
-	public ChatClient(String serverName,int port,JTextArea chatWindow ){
-		thePort=port;
-		serverLocation=serverName;
-		newLine="";
+
+	public ChatClient(String serverName, int port, JTextArea chatWindow) {
+		thePort = port;
+		serverLocation = serverName;
+		newLine = "";
 		theChatWindow = chatWindow;
-		serverStart=false;
+		serverStart = false;
 	}
-	
+
 	public void run() {
 		try {
 			clientSocket = new Socket(serverLocation, thePort);
-			
-			
-			 dataIn = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-			 dataOut =  new PrintWriter(clientSocket.getOutputStream(), true);
 
-			theChatWindow.append("Just connected to " + clientSocket.getRemoteSocketAddress());
+			dataIn = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+			dataOut = new PrintWriter(clientSocket.getOutputStream(), true);
+
+			theChatWindow.append("Just connected to " + clientSocket.getRemoteSocketAddress() + "\n");
 			serverStart = true;
-			while(true)
-			{
+			while (true) {
 
-				
-				
-				
-				theChatWindow.append( dataIn.readLine());
-				//dataOut = writeUTF()
+				theChatWindow.append(dataIn.readLine() + "\n");
+				// dataOut = writeUTF()
 			}
-			
+
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -51,19 +45,18 @@ public class ChatClient extends Thread
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
-	public void checkForName()
-	{
-		
+
+	public void checkForName() {
+
 	}
-	
-	public void sendNewLine(String theResponse) throws IOException
-	{
-		if(serverStart){
-		dataOut.println(theResponse);
+
+	public void sendNewLine(String theResponse) throws IOException {
+		if (serverStart) {
+			dataOut.println(theResponse);
 		}
-		
+
 	}
 
 }
