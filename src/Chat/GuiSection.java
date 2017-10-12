@@ -3,6 +3,7 @@ package Chat;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
@@ -23,11 +24,13 @@ public class GuiSection extends JFrame
 	JScrollPane theScroller;
 	DefaultCaret caret;
 	Box theBox;
+	ChatClient theClient;
+	ChatServer theServer;
 	
-	public GuiSection(String username) 
+	public GuiSection(String username)
 	{
 		userName = username;
-
+		
         Box theBox = Box.createVerticalBox();
 		chatWindow= new JTextArea(40,10);
 		chatWindow.setEditable(false);
@@ -47,9 +50,15 @@ public class GuiSection extends JFrame
 		addChatButton.setMnemonic(KeyEvent.VK_ENTER);
 		addChatButton.addActionListener(new ActionListener() {@Override
 				public void actionPerformed(ActionEvent e) {
-					addToChat(userName + ": " + userInputTextBox.getText());
+			try {
+				theClient.sendNewLine(userName + ": " + userInputTextBox.getText());
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 					userInputTextBox.setText("");
 			}});
+		
 		
 		theBox.add(addChatButton);
 		this.add(theBox);
@@ -63,11 +72,19 @@ public class GuiSection extends JFrame
 		this.setSize(400, 800);
 		this.setVisible(true);
 		
-	}
-	public void addToChat(String sentence){
-		chatWindow.append(sentence + "\n");
+
 
 	}
+	public void serverStart() throws IOException{
+		theClient = new ChatClient("Chat Server", 8090, chatWindow);
+		theServer = new ChatServer(8090, chatWindow);
+		new Thread(theServer).start();
+	}
+	
+	public void defaultAddToChat(String sentence){
+		chatWindow.append(sentence + "\n");
+	}
+	
 
 }
 
