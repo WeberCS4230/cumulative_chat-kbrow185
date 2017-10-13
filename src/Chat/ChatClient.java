@@ -30,7 +30,7 @@ public class ChatClient extends Thread {
 			dataIn = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			dataOut = new PrintWriter(clientSocket.getOutputStream(), true);
 
-			theChatWindow.append("Just connected to " + clientSocket.getRemoteSocketAddress() + "\n");
+			theChatWindow.append("Connecting to:  " + clientSocket.getRemoteSocketAddress() + "\n");
 			serverStart = true;
 			while (true) {
 
@@ -39,22 +39,20 @@ public class ChatClient extends Thread {
 			}
 
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
+			//If theres an issue I can't do much with it here. There is a connection issue and will likely boot client.
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			//If theres an issue I can't do much with it here. There is a connection issue and will likely boot client.
 			e.printStackTrace();
 		}
-
-	}
-
-	public void checkForName() {
 
 	}
 
 	public void sendNewLine(String theResponse) throws IOException {
 		if (serverStart) {
 			dataOut.println(theResponse);
+			//dataOut.flush();
+		
 		}
 
 	}

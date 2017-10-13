@@ -1,6 +1,5 @@
 package Chat;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.TreeSet;
@@ -50,16 +49,10 @@ public class ChatMain {
 		for (int i = 0; i < 5; i++) {
 			theGui.defaultAddToChat("", "   \n");
 		}
-		theGui.defaultAddToChat("", "CUSTOM IMPUT FROM USER.");
+		theGui.defaultAddToChat("", "CUSTOM INPUT FROM USER.");
+		theGui.startConnection();
+		theGui.defaultAddToChat("", "Please enter your UserName \n");
 
-		try {
-			theGui.defaultAddToChat("", "Please enter the requested IP address \n");
-			theGui.startConnection();
-			theGui.defaultAddToChat("", "Please enter your UserName \n");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
 	}
 

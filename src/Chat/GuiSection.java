@@ -72,24 +72,30 @@ public class GuiSection extends JFrame {
 
 	}
 
-	public void startConnection() throws IOException {
+	public void startConnection() {
 
-		String host = "127.0.0.1";
+		String host = JOptionPane.showInputDialog(new JFrame("Select Host"),"Please enter the server host ip address.\n localhost default.");
+	try {
 		if (!hostAvailable(host)) {
 			theServer = new ChatServer(8090);
 			new Thread(theServer).start();
 		}
 		theClient = new ChatClient(host, 8090, chatWindow);
 		new Thread(theClient).start();
+		
+		}catch(IOException e) {
+			//If theres an issue I can't do much with it here. There is a connection issue and will likely boot client.
+		}
 	}
 
+	//Created this to check if the server is running. 
 	public boolean hostAvailable(String host) {
 		try {
 			Socket s = new Socket(host, 8090);
 			s.close();
 			return true;
 		} catch (IOException e) {
-
+			//An exception task isnt really needed here. If the test fails it will just return false.
 		}
 		return false;
 	}
@@ -110,12 +116,8 @@ public class GuiSection extends JFrame {
 				theClient.sendNewLine(userName + ":\t" + sentence);
 			}
 		} catch (IOException e) {
-
+			//If theres an issue I can't do much with it here. There is a connection issue and will likely boot client.
 		}
-
-	}
-
-	public void closeServers() {
 
 	}
 
