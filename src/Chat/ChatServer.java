@@ -28,7 +28,6 @@ public class ChatServer extends Thread {
 
 				PrintWriter dataOut = new PrintWriter(theSocket.getOutputStream(), true);
 				BufferedReader dataIn = new BufferedReader(new InputStreamReader(theSocket.getInputStream()));
-				System.out.println("Client connection successful, Port: " + theServer.getLocalPort());
 				dataOut.println("ACK \n Successfully Connected to: " +theServer.getLocalPort());
 				
 
@@ -61,10 +60,9 @@ public class ChatServer extends Thread {
 						int clientChatLocation = chatCommands.getChatCurrentLocation();
 						while(true) {
 							//**************************
-							//These two lines. Make or break the connection. NEED TO FIND OUT WHY!! V
-							System.out.println(chatCommands.getChatCurrentLocation());
-							System.out.println(clientChatLocation + "Client");
-							//LINES OF STRUCTURE ^
+							//Without a flush, this thread doesn't function properly.
+							dataOut.flush();
+							//LINE OF STRUCTURE ^
 							if(clientChatLocation < chatCommands.getChatCurrentLocation()) {
 								
 								dataOut.println(chatCommands.getMessage(clientChatLocation));
