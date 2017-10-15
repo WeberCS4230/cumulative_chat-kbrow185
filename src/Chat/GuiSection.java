@@ -16,32 +16,26 @@ public class GuiSection extends JFrame
 	 * Each serializable class requires a version number. Assists with InvalidClassExceptions.
 	 */
 	private static final long serialVersionUID = 1L;
-	JButton addChatButton;
 	JTextArea chatWindow;
-	JTextArea userInputTextBox;
-	String userName;
-	JScrollPane theScroller;
-	DefaultCaret caret;
-	Box theBox;
 	
 	public GuiSection(String username) 
 	{
-		userName = username;
+		String userName = username;
 
         Box theBox = Box.createVerticalBox();
 		chatWindow= new JTextArea(40,10);
 		chatWindow.setEditable(false);
-		theScroller = new JScrollPane(chatWindow);
+		JScrollPane theScroller = new JScrollPane(chatWindow);
 		theBox.add(theScroller);
 		
 		this.add(theBox);
 		
 		theBox.add(new JLabel("User Input Below"));
 		
-		userInputTextBox = new JTextArea(2,10);
+		JTextArea userInputTextBox = new JTextArea(2,10);
 		theBox.add(userInputTextBox);
          
-		addChatButton = new JButton();
+		JButton addChatButton = new JButton();
 		addChatButton.setText("Submit");
 		addChatButton.setAlignmentX(CENTER_ALIGNMENT);
 		addChatButton.setMnemonic(KeyEvent.VK_ENTER);
