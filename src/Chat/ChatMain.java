@@ -43,14 +43,12 @@ public class ChatMain {
 		//For each assigned group, have each student say 5 responses.
 		for(TreeSet<Student> g : groups)
 		{
-			//System.out.println("-----------New Convo----------");
 			theGui.addToChat("-----------New Convo----------");
 			for(int i =0; i <5; i++)
 			{
 				for(Student s: g)
 				{
 					theGui.addToChat(s.firstName + " " +s.lastName + ":  " +s.getResponse()+ "\n");
-					//System.out.println(s.firstName + " " +s.lastName + ":  " +s.getResponse()+ "\n");
 				}
 			}
 			
