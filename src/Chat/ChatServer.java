@@ -19,6 +19,7 @@ public class ChatServer extends Thread {
 	}
 
 	public void run() {
+		// Code left in commits on the submitted branch -2pts
 
 		//System.out.println("Waiting for client connection. Port: " + theServer.getLocalPort());
 
@@ -59,8 +60,7 @@ public class ChatServer extends Thread {
 					public void run() {
 						int clientChatLocation = chatCommands.getChatCurrentLocation();
 						while(true) {
-							//**************************
-							//Without a flush, this thread doesn't function properly.
+							// The reason for your issue (and why the flush in the position you've put it solves your issue) is because you're running an infinite loop that takes all of the resources. As soon as you do a flush, the IO blocks you for long enough for other information to come across. This is still not a fix, but it looks like one because you've found a one-liner. In reality, you should be able to move that flush statement to AFTER read calls, and not have to have it before a check for messages (output and input should not have to be linked this way, otherwise you can assume some sort of issue).
 							dataOut.flush();
 							//LINE OF STRUCTURE ^
 							if(clientChatLocation < chatCommands.getChatCurrentLocation()) {
